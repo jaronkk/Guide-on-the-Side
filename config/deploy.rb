@@ -5,12 +5,11 @@ set :application, 'guide_on_the_side'
 set :repo_url, 'https://github.com/ndlib/Guide-on-the-Side.git'
 
 # Default branch is :master
-# if fetch(:stage).to_s == 'production'
-#   ask :branch, 'master'
-# else
-#   ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
-# end
-ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
+if fetch(:stage).to_s == 'production'
+  ask :branch, 'hesburgh-master'
+else
+  ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
+end
 
 # deploy_to is set by the environment
 set :deploy_to, proc { "#{fetch(:deploy_base)}/guide_on_the_side" }
