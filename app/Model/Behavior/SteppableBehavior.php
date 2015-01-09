@@ -4,6 +4,7 @@
  * defnition boxes, headings, and questions as well. It's a behavior because FinalQuiz needs it too.
  */
 //App::import('Sanitize');
+App::import('Lib', 'ImagePath');
 
 class SteppableBehavior extends ModelBehavior {
 
@@ -173,7 +174,7 @@ class SteppableBehavior extends ModelBehavior {
       //   hasMany between Question and Answer
       foreach($all_questions as $order => $question_id) {
         $question = $Model->Question->read(null, $question_id);
-        $grades[$order]['question'] = $question['Question']['question'];
+        $grades[$order]['question'] = $this->_parseImages($question['Question']['question'], true);
         $grades[$order]['correct_answer'] = $question['Answer'][$question['Question']['correct_answer']]['answer'];
         if (array_key_exists($question_id, $answers)) {
           $grades[$order]['user_answer'] = $question['Answer'][$answers[$question_id]]['answer'];
@@ -210,15 +211,8 @@ class SteppableBehavior extends ModelBehavior {
     return array();
   }
 
-  protected function _parseImages($step_content) {
-    $image_pattern = '/(\<img[^>]*src\=")(uploads\/images\/[^\"]*"[^>]*\>)/';
-    // The following is the only way I could figure out to get the webroot from the model.
-    //   It assumes this is being called from index.php.
-    $replacement_pattern = '$1' . Router::url('/') . '$2';
-    $step_content = preg_replace($image_pattern, $replacement_pattern, $step_content, -1, $count);
-//    debug($step_content);
-//    debug($count);
-    return $step_content;
+  protected function _parseImages($step_content, $full = false) {
+    return ImagePath::absolute_src($step_content, $full);
   }
 
   // An anonymous function would be cooler, but I'm on PHP 5.2. And create_function() is evil!
