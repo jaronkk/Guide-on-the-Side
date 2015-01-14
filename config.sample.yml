@@ -1,5 +1,6 @@
 application_title: Guide on the Side
 theme: GuideOnTheSide
+timezone: UTC # List of available timezones: http://php.net/manual/en/timezones.php
 
 database:
   datasource: Database/Mysql
