@@ -36,6 +36,11 @@ App::build(array('View' => array(ROOT . DS . 'themes' . DS)));
   } else {
     Configure::write('user_config', sfYaml::load(ROOT . DS . 'config.yml'));
   }
+
+  $timezone = Configure::read('user_config.timezone');
+  if ($timezone) {
+    date_default_timezone_set($timezone);
+  }
   
 
   // Wacky en/decoding goodies, also in common.js
