@@ -5,9 +5,15 @@ set :application, 'guide_on_the_side'
 set :repo_url, 'https://github.com/ndlib/Guide-on-the-Side.git'
 
 # Default branch is :master
-if fetch(:stage).to_s == 'production'
+if ENV['BRANCH']
+  # Does not prompt for branch when it is set as an environment variable
+  # e.g. `BRANCH=hesburgh-master cap production deploy`
+  set :branch, ENV['BRANCH']
+elsif fetch(:stage).to_s == 'production'
+  # Default to the master branch when deploying to production
   ask :branch, 'hesburgh-master'
 else
+  # Default to the current branch when deploying to other servers
   ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
 end
 
