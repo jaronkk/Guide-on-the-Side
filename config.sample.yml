@@ -1,5 +1,8 @@
 application_title: Guide on the Side
 theme: GuideOnTheSide
+# The timezone will default to the date.timezone PHP ini option, or UTC if it is not set.
+# List of available timezones: http://php.net/manual/en/timezones.php
+# timezone: UTC
 
 database:
   datasource: Database/Mysql
