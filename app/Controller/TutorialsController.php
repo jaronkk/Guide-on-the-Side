@@ -453,6 +453,13 @@ class TutorialsController extends AppController {
     }
     $id = $tutorial['Tutorial']['id'];
     $site_url = $tutorial['Tutorial']['url'];
+    if (env('HTTPS') && (strpos($site_url, 'http://') === 0)) {
+      // If GotS is running under https and the site url starts with http
+      //   then we need to redirect to an http version of GotS, otherwise the iframe will not load
+      $current_url = Router::url( null, true );
+      $target_url = preg_replace('/^https:/','http:', $current_url);
+      $this->redirect($target_url);
+    }
     $title = $tutorial['Tutorial']['title'];
     $meta_description = strip_tags($tutorial['Tutorial']['description']);
 
